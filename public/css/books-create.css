@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f7f8fa;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+
+.main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.form-card {
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.required {
+    margin-left: 5px;
+    color: #e74c3c;
+    font-size: 12px;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #666;
+}
+
+.form-textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.genre-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.submit-button {
+    padding: 12px 30px;
+    background: #333;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    opacity: 0.8;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background: #f5f5f5;
+}
+
+@media (max-width: 550px) {
+    .main {
+        margin-top: 25px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .submit-button,
+    .back-button {
+        width: 100%;
+        text-align: center;
+    }
+
+        .error-message {
+            margin: 6px 0 0;
+            color: #e74c3c;
+            font-size: 13px;
+        }
+}
