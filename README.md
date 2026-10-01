@@ -1,66 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BookShelf
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+書籍の登録・検索・レビュー・お気に入りなどを管理するための書籍管理アプリケーションです。
 
-## About Laravel
+## 主な機能
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ユーザー認証
+- 書籍一覧表示
+- 書籍詳細表示
+- 書籍登録
+- 書籍編集
+- 書籍削除
+- キーワード検索
+- ジャンル絞り込み
+- レビュー投稿・削除
+- 平均評価・レビュー件数表示
+- REST API
+    - 書籍一覧取得
+    - 書籍詳細取得
+    - 書籍登録
+    - 書籍更新
+    - 書籍削除
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ER図
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+````mermaid
+erDiagram
+    USERS ||--o{ BOOKS : creates
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ FAVORITES : has
+    USERS ||--o{ REVIEW_LIKES : likes
 
-## Learning Laravel
+    BOOKS ||--o{ REVIEWS : has
+    BOOKS ||--o{ FAVORITES : favorited
+    BOOKS ||--o{ BOOK_GENRE : has
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    GENRES ||--o{ BOOK_GENRE : categorizes
+    REVIEWS ||--o{ REVIEW_LIKES : receives
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        varchar password
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    BOOKS {
+        bigint id PK
+        bigint user_id FK
+        varchar title
+        varchar author
+        varchar isbn UK
+        date published_date
+        text description
+        varchar image_url
+    }
 
-## Laravel Sponsors
+    GENRES {
+        bigint id PK
+        varchar name UK
+    }
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    BOOK_GENRE {
+        bigint id PK
+        bigint book_id FK
+        bigint genre_id FK
+    }
 
-### Premium Partners
+    REVIEWS {
+        bigint id PK
+        bigint user_id FK
+        bigint book_id FK
+        tinyint rating
+        text comment
+    }
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    FAVORITES {
+        bigint id PK
+        bigint user_id FK
+        bigint book_id FK
+    }
 
-## Contributing
+    REVIEW_LIKES {
+        bigint id PK
+        bigint user_id FK
+        bigint review_id FK
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ## 環境構築
 
-## Code of Conduct
+### Dockerビルド
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. リポジトリをクローン
 
-## Security Vulnerabilities
+```bash
+git clone <リポジトリURL>
+````
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. プロジェクトディレクトリへ移動
 
-## License
+```bash
+cd bookshelf-app
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. Composerパッケージをインストール
+
+```bash
+composer install
+```
+
+4. `.env` ファイルを作成
+
+```bash
+cp .env.example .env
+```
+
+5. Laravel Sailを起動
+
+```bash
+./vendor/bin/sail up -d
+```
+
+6. アプリケーションキーを作成
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+
+7. マイグレーション・シーディングを実行
+
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
+
+### 使用技術
+
+- PHP 8.5
+- Laravel 10
+- MySQL
+- Laravel Sail
+- Docker
+
+### URL
+
+- アプリケーション：http://localhost
+- 書籍一覧：http://localhost/books
+- API：http://localhost/api/v1/books

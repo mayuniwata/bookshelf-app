@@ -1,29 +1,178 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('書籍の編集') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('books.update', $book) }}" method="POST" novalidate>
-                        @method('PUT')
-                        @include('books._form')
+@section('title', '書籍編集')
 
-                        <div class="flex items-center justify-end mt-6 pt-6 border-t border-gray-200">
-                            <a href="{{ route('books.show', $book) }}" class="text-gray-600 hover:text-gray-900 mr-4">
-                                キャンセル
-                            </a>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-                                更新
-                            </button>
-                        </div>
-                    </form>
-                </div>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/books-edit.css') }}">
+@endsection
+
+@section('content')
+
+<main class="main">
+
+    <h2 class="page-title">書籍編集</h2>
+
+    <div class="form-card">
+
+        <form action="{{ route('books.update', $book) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label class="form-label">
+                    タイトル
+                    <span class="required">必須</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    class="form-input"
+                    value="{{ old('title', $book->title) }}"
+                >
+
+                @error('title')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
-        </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    著者
+                    <span class="required">必須</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="author"
+                    class="form-input"
+                    value="{{ old('author', $book->author) }}"
+                >
+
+                @error('author')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    ISBN
+                    <span class="required">必須</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="isbn"
+                    class="form-input"
+                    value="{{ old('isbn', $book->isbn) }}"
+                >
+
+                @error('isbn')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    出版日
+                    <span class="required">必須</span>
+                </label>
+
+                <input
+                    type="date"
+                    name="published_date"
+                    class="form-input"
+                    value="{{ old('published_date', $book->published_date) }}"
+                >
+
+                @error('published_date')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    画像URL
+                </label>
+
+                <input
+                    type="url"
+                    name="image_url"
+                    class="form-input"
+                    value="{{ old('image_url', $book->image_url) }}"
+                    placeholder="https://..."
+                >
+
+                @error('image_url')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    ジャンル
+                </label>
+
+                <div class="genre-list">
+
+                    @foreach ($genres as $genre)
+
+                        <label class="genre-item">
+
+                            <input
+                                type="checkbox"
+                                name="genres[]"
+                                value="{{ $genre->id }}"
+                                {{ in_array(
+                                    $genre->id,
+                                    old('genres', $book->genres->pluck('id')->toArray())
+                                ) ? 'checked' : '' }}
+                            >
+
+                            {{ $genre->name }}
+
+                        </label>
+
+                    @endforeach
+
+                </div>
+
+                @error('genres')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    説明
+                </label>
+
+                <textarea
+                    name="description"
+                    class="form-textarea"
+                >{{ old('description', $book->description) }}</textarea>
+
+                @error('description')
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-actions">
+
+                <button type="submit" class="submit-button">
+                    更新する
+                </button>
+
+                <a href="{{ route('books.show', $book) }}" class="back-button">
+                    戻る
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
-</x-app-layout>
+
+</main>
+
+@endsection

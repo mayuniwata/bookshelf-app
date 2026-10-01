@@ -1,0 +1,161 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f7f8fa;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+
+.main {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 28px;
+}
+
+.register-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #333;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.book-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #dcdfe4;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.book-card__title a {
+    color: #1265e8;
+    text-decoration: none;
+}
+
+.book-card__title a:hover {
+    text-decoration: underline;
+}
+
+.book-card__image-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 180px;
+    background: #e9eef5;
+}
+
+.book-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.book-card__no-image {
+    color: #999;
+    font-size: 14px;
+}
+
+.book-card__body {
+    padding: 18px;
+}
+
+.book-card__title {
+    margin: 0 0 8px;
+    color: #1265e8;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.book-card__author {
+    margin: 0 0 10px;
+    color: #666;
+}
+
+.book-card__genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.genre-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #eef0f3;
+    border-radius: 3px;
+    color: #666;
+    font-size: 12px;
+}
+
+.book-card__date {
+    margin: 0;
+    color: #999;
+    font-size: 13px;
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+    padding: 50px;
+    background: #fff;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.pagination {
+    margin-top: 40px;
+}
+
+.book-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.book-card__star {
+    color: #f5a623;
+    font-size: 18px;
+}
+
+.book-card__review-count {
+    color: #777;
+    font-size: 13px;
+}
+
+@media (max-width: 800px) {
+    .book-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .book-list {
+        grid-template-columns: 1fr;
+    }
+}
