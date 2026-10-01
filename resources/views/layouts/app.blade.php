@@ -4,45 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'BookShelf')</title>
 
+    {{-- 共通CSS --}}
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 
+    {{-- ページごとのCSS --}}
     @yield('css')
+
+    {{-- Breeze / Alpine --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
 
-<header class="header">
-    <div class="header__inner">
-        <h1 class="header__logo">
-            <a href="{{ route('home') }}">BookShelf</a>
-        </h1>
+    {{-- 全画面共通ヘッダー --}}
+    @include('layouts.navigation')
 
-        <nav class="header__nav">
-            @auth
-                <span>{{ Auth::user()->name }}</span>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit">ログアウト</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}">ログイン</a>
-                <a href="{{ route('register') }}">会員登録</a>
-            @endauth
-        </nav>
-    </div>
-</header>
+    {{-- 成功メッセージ --}}
+    @if (session('success'))
+        <div class="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
 
-@if (session('success'))
-    <div class="success-message">
-        {{ session('success') }}
-    </div>
-@endif
 
-@yield('content')
+    {{-- エラーメッセージ --}}
+    @if (session('error'))
+        <div class="error-message">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
+    {{-- ページ内容 --}}
+    @yield('content')
+
+
+    @stack('scripts')
 
 </body>
 

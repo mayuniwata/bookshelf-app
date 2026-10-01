@@ -1,37 +1,503 @@
+/* ========================================
+   共通設定
+======================================== */
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     margin: 0;
-    background: #f7f8fa;
-    color: #333;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    padding: 0;
+
+    color: #333333;
+    background: #f5f6f8;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans JP",
+        sans-serif;
+
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-.header {
-    padding: 18px 40px;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
+a {
+    color: inherit;
 }
 
-.header__inner {
-    max-width: 1100px;
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+
+/* ========================================
+   全画面共通ヘッダー
+======================================== */
+
+.main-nav {
+    width: 100%;
+    height: 64px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+
+    position: relative;
+    z-index: 100;
+}
+
+
+/* ヘッダー中央 */
+
+.main-nav__inner {
+    width: 100%;
+    max-width: 1120px;
+    height: 64px;
+
     margin: 0 auto;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
 }
 
-.header__logo {
-    margin: 0;
-    font-size: 22px;
+
+/* ========================================
+   ロゴ
+======================================== */
+
+.main-nav__logo {
+    width: 40px;
+    height: 40px;
+
+    margin-right: 35px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.main-nav__logo a {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+}
+
+
+/* SVG巨大化防止 */
+
+.main-nav__logo svg,
+.main-nav__logo-image {
+    display: block !important;
+
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    color: #4b5563;
+    fill: currentColor;
+}
+
+
+/* ========================================
+   メニュー
+======================================== */
+
+.main-nav__menu {
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 34px;
+}
+
+.main-nav__link {
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+
+    color: #747c87;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    white-space: nowrap;
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.main-nav__link:hover {
+    color: #252a31;
+}
+
+
+/* 現在開いているページ */
+
+.main-nav__link.is-active {
+    color: #252a31;
+}
+
+.main-nav__link.is-active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+
+    background: #6b7280;
+}
+
+
+/* ========================================
+   ヘッダー右側
+======================================== */
+
+.main-nav__right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+/* ========================================
+   ログイン中ユーザー
+======================================== */
+
+.user-menu {
+    position: relative;
+
+    margin: 0;
+    padding: 0;
+}
+
+.user-menu__button {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 8px 2px;
+
+    border: 0;
+
+    color: #747c87;
+    background: transparent;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    cursor: pointer;
+
+    list-style: none;
+
+    user-select: none;
+}
+
+.user-menu__button:hover {
+    color: #252a31;
+}
+
+
+/* details標準矢印を消す */
+
+.user-menu__button::-webkit-details-marker {
+    display: none;
+}
+
+.user-menu__button::marker {
+    display: none;
+    content: "";
+}
+
+
+/* 自作矢印 */
+
+.user-menu__arrow {
+    position: relative;
+    top: -1px;
+
+    color: #89919c;
+
+    font-size: 14px;
+    line-height: 1;
+}
+
+
+/* ========================================
+   ユーザードロップダウン
+======================================== */
+
+.user-menu__dropdown {
+    position: absolute;
+
+    top: calc(100% + 5px);
+    right: 0;
+
+    z-index: 1000;
+
+    width: 145px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e5ea;
+    border-radius: 5px;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.user-menu__dropdown form {
+    margin: 0;
+}
+
+
+/* ログアウト */
+
+.user-menu__logout {
+    display: block;
+
+    width: 100%;
+
+    padding: 9px 11px;
+
+    border: 0;
+    border-radius: 3px;
+
+    background: transparent;
+
+    color: #555d68;
+
+    font-size: 13px;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.user-menu__logout:hover {
+    background: #f3f4f6;
+
+    color: #222831;
+}
+
+
+/* ========================================
+   未ログイン時
+======================================== */
+
+.main-nav__guest-link {
+    color: #747c87;
+
+    font-size: 13px;
+    font-weight: 400;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.main-nav__guest-link:hover {
+    color: #252a31;
+}
+
+
+/* ========================================
+   成功メッセージ
+======================================== */
 
 .success-message {
-    max-width: 1100px;
-    margin: 20px auto;
-    padding: 12px 20px;
-    background: #e8f5e9;
-    border: 1px solid #a5d6a7;
+    width: calc(100% - 40px);
+    max-width: 1080px;
+
+    margin: 20px auto 0;
+    padding: 12px 16px;
+
+    border: 1px solid #b7e4c7;
     border-radius: 5px;
-    color: #2e7d32;
+
+    background: #ecf9f0;
+
+    color: #287a43;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   エラーメッセージ
+======================================== */
+
+.error-message {
+    width: calc(100% - 40px);
+    max-width: 1080px;
+
+    margin: 20px auto 0;
+    padding: 12px 16px;
+
+    border: 1px solid #f2b8b5;
+    border-radius: 5px;
+
+    background: #fff0f0;
+
+    color: #b42318;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   タブレット
+======================================== */
+
+@media screen and (max-width: 900px) {
+
+    .main-nav__inner {
+        padding: 0 16px;
+    }
+
+    .main-nav__logo {
+        margin-right: 24px;
+    }
+
+    .main-nav__menu {
+        gap: 22px;
+    }
+
+    .main-nav__link {
+        font-size: 12px;
+    }
+
+}
+
+
+/* ========================================
+   スマートフォン
+======================================== */
+
+@media screen and (max-width: 700px) {
+
+    .main-nav {
+        height: auto;
+    }
+
+    .main-nav__inner {
+        min-height: 64px;
+        height: auto;
+
+        padding: 0 15px;
+
+        flex-wrap: wrap;
+    }
+
+    .main-nav__logo {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+
+        margin-right: 15px;
+    }
+
+    .main-nav__logo a {
+        width: 30px;
+        height: 30px;
+    }
+
+    .main-nav__logo svg,
+    .main-nav__logo-image {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+
+        max-width: 30px !important;
+        max-height: 30px !important;
+    }
+
+
+    /* メニューを2段目へ */
+
+    .main-nav__menu {
+        order: 3;
+
+        width: 100%;
+        height: 45px;
+
+        gap: 24px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+    }
+
+    .main-nav__menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    .main-nav__link {
+        height: 45px;
+
+        flex-shrink: 0;
+
+        font-size: 12px;
+    }
+
+    .main-nav__right {
+        margin-left: auto;
+    }
+
+    .user-menu__button,
+    .main-nav__guest-link {
+        font-size: 12px;
+    }
+
+
+    /* メッセージ */
+
+    .success-message,
+    .error-message {
+        width: calc(100% - 30px);
+
+        margin-top: 15px;
+    }
+
 }
