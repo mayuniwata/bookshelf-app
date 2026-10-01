@@ -85,6 +85,8 @@ erDiagram
         bigint user_id FK
         bigint review_id FK
     }
+    ```
+
 
     ## 環境構築
 
