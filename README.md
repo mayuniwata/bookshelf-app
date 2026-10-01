@@ -23,7 +23,7 @@
 
 ## ER図
 
-````mermaid
+```mermaid
 erDiagram
     USERS ||--o{ BOOKS : creates
     USERS ||--o{ REVIEWS : writes
