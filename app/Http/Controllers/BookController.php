@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
     public function index()
-{
-    $books = Book::with('genres')
-        ->withAvg('reviews', 'rating')
-        ->withCount('reviews')
-        ->paginate(10);
+    {
+        $books = Book::with('genres')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->paginate(10);
 
-    return view('books.index', compact('books'));
-}
+        return view('books.index', compact('books'));
+    }
 
     public function create()
     {
@@ -39,7 +39,7 @@ class BookController extends Controller
         ]);
 
         $book = Book::create([
-            'user_id' => 1,
+            'user_id' => auth()->id(),
             'title' => $validated['title'],
             'author' => $validated['author'],
             'isbn' => $validated['isbn'],
@@ -60,6 +60,7 @@ class BookController extends Controller
     $book->load([
         'genres',
         'reviews.user',
+        'reviews.likedByUsers',
     ]);
 
     $book->loadAvg('reviews', 'rating');
@@ -69,50 +70,60 @@ class BookController extends Controller
 }
 
     public function edit(Book $book)
-{
-    $genres = Genre::all();
+    {
+        abort_unless($book->user_id === auth()->id(), 403);
 
-    $book->load('genres');
+        $genres = Genre::all();
 
-    return view('books.edit', compact('book', 'genres'));
-}
+        $book->load('genres');
 
-public function update(Request $request, Book $book)
-{
-    $validated = $request->validate([
-        'title' => ['required', 'string', 'max:255'],
-        'author' => ['required', 'string', 'max:255'],
-        'isbn' => ['required', 'string', 'max:255', 'unique:books,isbn,' . $book->id],
-        'published_date' => ['required', 'date'],
-        'description' => ['nullable', 'string'],
-        'image_url' => ['nullable', 'url', 'max:255'],
-        'genres' => ['nullable', 'array'],
-        'genres.*' => ['exists:genres,id'],
-    ]);
+        return view('books.edit', compact('book', 'genres'));
+    }
 
-    $book->update([
-        'title' => $validated['title'],
-        'author' => $validated['author'],
-        'isbn' => $validated['isbn'],
-        'published_date' => $validated['published_date'],
-        'description' => $validated['description'] ?? null,
-        'image_url' => $validated['image_url'] ?? null,
-    ]);
+    public function update(Request $request, Book $book)
+    {
+        abort_unless($book->user_id === auth()->id(), 403);
 
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+            'isbn' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:books,isbn,' . $book->id,
+            ],
+            'published_date' => ['required', 'date'],
+            'description' => ['nullable', 'string'],
+            'image_url' => ['nullable', 'url', 'max:255'],
+            'genres' => ['nullable', 'array'],
+            'genres.*' => ['exists:genres,id'],
+        ]);
 
-    $book->genres()->sync($validated['genres'] ?? []);
+        $book->update([
+            'title' => $validated['title'],
+            'author' => $validated['author'],
+            'isbn' => $validated['isbn'],
+            'published_date' => $validated['published_date'],
+            'description' => $validated['description'] ?? null,
+            'image_url' => $validated['image_url'] ?? null,
+        ]);
 
-    return redirect()
-        ->route('books.show', $book)
-        ->with('success', '書籍情報を更新しました。');
-}
+        $book->genres()->sync($validated['genres'] ?? []);
 
-public function destroy(Book $book)
-{
-    $book->delete();
+        return redirect()
+            ->route('books.show', $book)
+            ->with('success', '書籍情報を更新しました。');
+    }
 
-    return redirect()
-        ->route('books.index')
-        ->with('success', '書籍を削除しました。');
-}
+    public function destroy(Book $book)
+    {
+        abort_unless($book->user_id === auth()->id(), 403);
+
+        $book->delete();
+
+        return redirect()
+            ->route('books.index')
+            ->with('success', '書籍を削除しました。');
+    }
 }

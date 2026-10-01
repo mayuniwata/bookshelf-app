@@ -16,7 +16,7 @@ class ReviewController extends Controller
         ]);
 
         Review::create([
-            'user_id' => 1,
+            'user_id' => auth()->id(),
             'book_id' => $book->id,
             'rating' => $validated['rating'],
             'comment' => $validated['comment'],
@@ -27,14 +27,53 @@ class ReviewController extends Controller
             ->with('success', 'レビューを投稿しました。');
     }
 
+    public function edit(Review $review)
+    {
+        abort_unless($review->user_id === auth()->id(), 403);
+
+        return view('reviews.edit', compact('review'));
+    }
+
+    public function update(Request $request, Review $review)
+    {
+        abort_unless($review->user_id === auth()->id(), 403);
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'comment' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $review->update($validated);
+
+        return redirect()
+            ->route('books.show', $review->book)
+            ->with('success', 'レビューを更新しました。');
+    }
+
     public function destroy(Review $review)
-{
-    $book = $review->book;
+    {
+        abort_unless($review->user_id === auth()->id(), 403);
 
-    $review->delete();
+        $book = $review->book;
 
-    return redirect()
-        ->route('books.show', $book)
-        ->with('success', 'レビューを削除しました。');
+        $review->delete();
+
+        return redirect()
+            ->route('books.show', $book)
+            ->with('success', 'レビューを削除しました。');
+    }
+
+    public function like(Review $review)
+    {
+        $user = auth()->user();
+
+        if ($review->likedByUsers()->where('users.id', $user->id)->exists()) {
+            $review->likedByUsers()->detach($user->id);
+        } else {
+            $review->likedByUsers()->attach($user->id);
+        }
+
+        return back();
+    }
 }
-}
+
