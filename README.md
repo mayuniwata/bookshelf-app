@@ -95,7 +95,7 @@ erDiagram
 1. リポジトリをクローン
 
 ```bash
-git clone <リポジトリURL>
+git clone https://github.com/mayuniwata/bookshelf-app.git
 ````
 
 2. プロジェクトディレクトリへ移動
