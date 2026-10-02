@@ -1,13 +1,13 @@
 /* ==============================
-   書籍登録画面
+   レビュー編集
 ============================== */
 
-.create-heading {
+.review-edit-heading {
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
 }
 
-.create-heading__inner {
+.review-edit-heading__inner {
     width: min(1120px, calc(100% - 48px));
     margin: 0 auto;
     padding: 21px 0 24px;
@@ -22,8 +22,9 @@
    背景
 ============================== */
 
-.create-page {
+.review-edit-page {
     min-height: calc(100vh - 130px);
+
     padding: 44px 24px 70px;
 
     background: #f3f4f6;
@@ -31,14 +32,14 @@
 
 
 /* ==============================
-   フォームカード
+   白カード
 ============================== */
 
-.create-card {
+.review-edit-card {
     width: min(570px, 100%);
     margin: 0 auto;
 
-    padding: 27px 24px 22px;
+    padding: 25px 22px 20px;
 
     background: #ffffff;
 
@@ -52,17 +53,42 @@
 
 
 /* ==============================
-   入力欄
+   書籍名
+============================== */
+
+.book-name {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: 20px;
+
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.book-name__label {
+    font-weight: 500;
+}
+
+.book-name__title {
+    color: #374151;
+    font-weight: 700;
+}
+
+
+/* ==============================
+   フォーム
 ============================== */
 
 .form-group {
-    margin-bottom: 21px;
+    margin-bottom: 20px;
 }
 
 .form-label {
     display: block;
 
-    margin: 0 0 6px;
+    margin: 0 0 7px;
 
     color: #4b5563;
 
@@ -77,71 +103,87 @@
 }
 
 
-/* input */
-
-.form-input {
-    display: block;
-
-    width: 100%;
-    height: 36px;
-
-    box-sizing: border-box;
-
-    padding: 6px 0;
-
-    border: 0;
-    border-bottom: 1px solid #edf0f3;
-    border-radius: 0;
-
-    outline: none;
-
-    background: #ffffff;
-
-    color: #1f2937;
-
-    font-family: inherit;
-    font-size: 15px;
-
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.form-input:focus {
-    border-bottom-color: #60a5fa;
-
-    box-shadow: 0 1px 0 #60a5fa;
-}
-
-.form-input::placeholder {
-    color: #aab3c2;
-}
-
-
-/* date */
-
-.form-input[type="date"] {
-    color: #1f2937;
-}
-
-
 /* ==============================
-   補足
+   星評価
 ============================== */
 
-.form-help {
-    margin: 4px 0 0;
+.rating-input {
+    display: flex;
+    align-items: center;
 
-    color: #9ca3af;
+    gap: 8px;
 
-    font-size: 11px;
+    width: max-content;
+}
 
-    line-height: 1.5;
+
+/* radio本体は隠す */
+
+.rating-item input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* 星 */
+
+.rating-item {
+    display: block;
+
+    cursor: pointer;
+}
+
+.rating-star {
+    display: block;
+
+    color: #d1d5db;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    transition:
+        color 0.12s ease,
+        transform 0.12s ease;
+}
+
+
+/* 選択された星 */
+
+.rating-item:has(input:checked) .rating-star {
+    color: #f4c20d;
+}
+
+
+/*
+   選択された星より前も黄色にする
+*/
+
+.rating-input:has(.rating-item:nth-child(1) input:checked) .rating-item:nth-child(-n+1) .rating-star,
+
+.rating-input:has(.rating-item:nth-child(2) input:checked) .rating-item:nth-child(-n+2) .rating-star,
+
+.rating-input:has(.rating-item:nth-child(3) input:checked) .rating-item:nth-child(-n+3) .rating-star,
+
+.rating-input:has(.rating-item:nth-child(4) input:checked) .rating-item:nth-child(-n+4) .rating-star,
+
+.rating-input:has(.rating-item:nth-child(5) input:checked) .rating-item:nth-child(-n+5) .rating-star {
+    color: #f4c20d;
+}
+
+.rating-item:hover .rating-star {
+    transform: scale(1.08);
 }
 
 
 /* ==============================
-   説明
+   コメント
 ============================== */
 
 .form-textarea {
@@ -178,59 +220,7 @@
 
 .form-textarea:focus {
     border-bottom-color: #60a5fa;
-
     box-shadow: 0 1px 0 #60a5fa;
-}
-
-
-/* ==============================
-   ジャンル
-============================== */
-
-.genre-box {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    row-gap: 20px;
-    column-gap: 30px;
-
-    margin-top: 8px;
-
-    padding: 20px 22px 22px;
-
-    border-radius: 5px;
-
-    background: #f8fafc;
-}
-
-.genre-item {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    min-width: 0;
-
-    color: #4b5563;
-
-    font-size: 13px;
-
-    cursor: pointer;
-}
-
-.genre-item input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-
-    margin: 0;
-
-    flex: 0 0 auto;
-
-    accent-color: #65ad58;
-
-    cursor: pointer;
 }
 
 
@@ -239,7 +229,7 @@
 ============================== */
 
 .form-error {
-    margin: 5px 0 0;
+    margin: 6px 0 0;
 
     color: #dc2626;
 
@@ -259,11 +249,9 @@
 
     gap: 18px;
 
-    margin-top: 25px;
+    margin-top: 16px;
 
-    padding-top: 21px;
-
-    border-top: 1px solid #e5e7eb;
+    padding-top: 15px;
 }
 
 .cancel-button {
@@ -286,10 +274,9 @@
     align-items: center;
     justify-content: center;
 
-    min-width: 76px;
     height: 38px;
 
-    padding: 0 19px;
+    padding: 0 17px;
 
     border: 0;
     border-radius: 4px;
@@ -318,28 +305,15 @@
 
 @media (max-width: 700px) {
 
-    .create-heading__inner {
+    .review-edit-heading__inner {
         width: calc(100% - 32px);
     }
 
-    .create-page {
-        padding: 25px 16px 45px;
+    .review-edit-page {
+        padding: 28px 16px 50px;
     }
 
-    .create-card {
-        padding: 23px 20px;
+    .review-edit-card {
+        padding: 22px 20px 18px;
     }
-
-    .genre-box {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-@media (max-width: 450px) {
-
-    .genre-box {
-        grid-template-columns: 1fr;
-    }
-
 }

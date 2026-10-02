@@ -1,50 +1,115 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            ジャンル: {{ $genre->name }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="mb-4">
-                <a href="{{ route('books.index') }}" class="text-blue-600 hover:text-blue-800">← 書籍一覧に戻る</a>
-            </div>
+@section('title', 'ジャンル: ' . $genre->name)
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    @if($books->isEmpty())
-                        <p>このジャンルの書籍はまだ登録されていません。</p>
-                    @else
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            @foreach($books as $book)
-                                <a href="{{ route('books.show', $book) }}" class="block border rounded-lg p-4 shadow hover:shadow-lg transition">
-                                    @if($book->image_url)
-                                        <img src="{{ $book->image_url }}" alt="{{ $book->title }}" class="w-full h-48 object-cover mb-4 rounded">
-                                    @else
-                                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center mb-4 rounded">
-                                            <span class="text-gray-500">画像なし</span>
-                                        </div>
-                                    @endif
-                                    <h3 class="font-bold text-lg mb-2 text-blue-600">{{ $book->title }}</h3>
-                                    <p class="text-gray-600 text-sm mb-2">{{ $book->author }}</p>
-                                    <div class="flex flex-wrap gap-1">
-                                        @foreach($book->genres as $g)
-                                            <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded {{ $g->id === $genre->id ? 'bg-blue-200 text-blue-700' : '' }}">
-                                                {{ $g->name }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/genres-show.css') }}">
+@endsection
 
-                        <div class="mt-6">
-                            {{ $books->links() }}
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+@section('content')
+
+<div class="genre-heading">
+    <div class="genre-heading__inner">
+        ジャンル: {{ $genre->name }}
     </div>
-</x-app-layout>
+</div>
+
+<main class="genre-show-page">
+
+    <div class="genre-show-container">
+
+        {{-- 戻る --}}
+        <div class="genre-back">
+            <a href="{{ route('books.index') }}">
+                ← 書籍一覧に戻る
+            </a>
+        </div>
+
+        {{-- 書籍一覧 --}}
+        <div class="genre-books-panel">
+
+            @if ($books->isEmpty())
+
+                <div class="genre-empty">
+                    このジャンルの書籍はまだ登録されていません。
+                </div>
+
+            @else
+
+                <div class="genre-books-grid">
+
+                    @foreach ($books as $book)
+
+                        <a
+                            href="{{ route('books.show', $book) }}"
+                            class="book-card"
+                        >
+
+                            {{-- 画像 --}}
+                            <div class="book-card__image-area">
+
+                                @if ($book->image_url)
+
+                                    <img
+                                        src="{{ $book->image_url }}"
+                                        alt="{{ $book->title }}"
+                                        class="book-card__image"
+                                    >
+
+                                @else
+
+                                    <div class="book-card__no-image">
+                                        {{ $book->id }}
+                                    </div>
+
+                                @endif
+
+                            </div>
+
+                            {{-- 情報 --}}
+                            <div class="book-card__body">
+
+                                <h2 class="book-card__title">
+                                    {{ $book->title }}
+                                </h2>
+
+                                <p class="book-card__author">
+                                    {{ $book->author }}
+                                </p>
+
+                                <div class="book-card__genres">
+
+                                    @foreach ($book->genres as $g)
+
+                                        <span class="genre-tag {{ $g->id === $genre->id ? 'is-current' : '' }}">
+                                            {{ $g->name }}
+                                        </span>
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        </a>
+
+                    @endforeach
+
+                </div>
+
+                {{-- ページネーション --}}
+                @if ($books->hasPages())
+                    <div class="genre-pagination">
+                        {{ $books->links() }}
+                    </div>
+                @endif
+
+            @endif
+
+        </div>
+
+    </div>
+
+</main>
+
+@endsection

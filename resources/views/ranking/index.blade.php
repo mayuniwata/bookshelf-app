@@ -1,76 +1,128 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('評価ランキング TOP 10') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    @if($rankedBooks->isEmpty())
-                        <p class="text-gray-500 text-center py-8">まだレビューが投稿された書籍がありません。</p>
-                    @else
-                        <div class="space-y-4">
-                            @foreach($rankedBooks as $index => $book)
-                                <a href="{{ route('books.show', $book) }}" class="block hover:bg-gray-50 transition rounded-lg">
-                                    <div class="flex items-center p-4 border rounded-lg {{ $index < 3 ? 'border-yellow-300 bg-yellow-50' : 'border-gray-200' }}">
-                                        <!-- 順位 -->
-                                        <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full {{ $index === 0 ? 'bg-yellow-400 text-white' : ($index === 1 ? 'bg-gray-300 text-white' : ($index === 2 ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-600')) }} font-bold text-xl mr-4">
-                                            {{ $index + 1 }}
-                                        </div>
+@section('title', '評価ランキング TOP 10')
 
-                                        <!-- 書籍画像 -->
-                                        <div class="flex-shrink-0 w-16 h-20 mr-4">
-                                            @if($book->image_url)
-                                                <img src="{{ $book->image_url }}" alt="{{ $book->title }}" class="w-full h-full object-cover rounded shadow">
-                                            @else
-                                                <div class="w-full h-full bg-gray-200 flex items-center justify-center rounded">
-                                                    <span class="text-gray-400 text-xs">No Image</span>
-                                                </div>
-                                            @endif
-                                        </div>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/ranking-index.css') }}">
+@endsection
 
-                                        <!-- 書籍情報 -->
-                                        <div class="flex-grow min-w-0">
-                                            <h3 class="text-lg font-semibold text-blue-600 hover:text-blue-800 truncate">
-                                                {{ $book->title }}
-                                            </h3>
-                                            <p class="text-sm text-gray-600">{{ $book->author }}</p>
-                                            <div class="flex items-center mt-1">
-                                                @for($i = 1; $i <= 5; $i++)
-                                                    @if($i <= round($book->reviews_avg_rating))
-                                                        <span class="text-yellow-400">★</span>
-                                                    @else
-                                                        <span class="text-gray-300">★</span>
-                                                    @endif
-                                                @endfor
-                                                <span class="ml-2 text-sm text-gray-600">
-                                                    {{ number_format($book->reviews_avg_rating, 2) }}
-                                                </span>
-                                                <span class="ml-2 text-xs text-gray-500">
-                                                    ({{ $book->reviews_count }}件のレビュー)
-                                                </span>
-                                            </div>
-                                        </div>
+@section('content')
 
-                                        <!-- 評価バッジ -->
-                                        <div class="flex-shrink-0 ml-4">
-                                            <div class="text-center">
-                                                <div class="text-2xl font-bold {{ $index < 3 ? 'text-yellow-500' : 'text-gray-600' }}">
-                                                    {{ number_format($book->reviews_avg_rating, 1) }}
-                                                </div>
-                                                <div class="text-xs text-gray-500">平均評価</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+<div class="ranking-heading">
+    <div class="ranking-heading__inner">
+        評価ランキング TOP 10
     </div>
-</x-app-layout>
+</div>
+
+<main class="ranking-page">
+
+    <div class="ranking-container">
+
+        @if($rankedBooks->isEmpty())
+
+            <div class="ranking-empty">
+                まだレビューが投稿された書籍がありません。
+            </div>
+
+        @else
+
+            <div class="ranking-list">
+
+                @foreach($rankedBooks as $index => $book)
+
+                    <a
+                        href="{{ route('books.show', $book) }}"
+                        class="ranking-item"
+                    >
+
+                        {{-- 順位 --}}
+                        <div class="ranking-position
+                            @if($index === 0) ranking-position--first
+                            @elseif($index === 1) ranking-position--second
+                            @elseif($index === 2) ranking-position--third
+                            @endif
+                        ">
+                            {{ $index + 1 }}
+                        </div>
+
+                        {{-- 書籍画像 --}}
+                        <div class="ranking-image">
+
+                            @if($book->image_url)
+
+                                <img
+                                    src="{{ $book->image_url }}"
+                                    alt="{{ $book->title }}"
+                                >
+
+                            @else
+
+                                <div class="ranking-no-image">
+                                    {{ $book->id }}
+                                </div>
+
+                            @endif
+
+                        </div>
+
+                        {{-- 書籍情報 --}}
+                        <div class="ranking-info">
+
+                            <h3 class="ranking-title">
+                                {{ $book->title }}
+                            </h3>
+
+                            <p class="ranking-author">
+                                {{ $book->author }}
+                            </p>
+
+                            <div class="ranking-stars">
+
+                                @for($i = 1; $i <= 5; $i)
+
+                                    @if($i <= round($book->reviews_avg_rating))
+                                        <span class="star star--active">★</span>
+                                    @else
+                                        <span class="star">★</span>
+                                    @endif
+
+                                @endfor
+
+                                <span class="ranking-rating">
+                                    {{ number_format($book->reviews_avg_rating, 2) }}
+                                </span>
+
+                                <span class="ranking-reviews">
+                                    ({{ $book->reviews_count }}件のレビュー)
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        {{-- 平均評価 --}}
+                        <div class="ranking-score">
+
+                            <div class="ranking-score__number">
+                                {{ number_format($book->reviews_avg_rating, 1) }}
+                            </div>
+
+                            <div class="ranking-score__label">
+                                平均評価
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                @endforeach
+
+            </div>
+
+        @endif
+
+    </div>
+
+</main>
+
+@endsection

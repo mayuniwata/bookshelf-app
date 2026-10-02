@@ -1,13 +1,13 @@
 /* ==============================
-   書籍登録画面
+   ジャンル登録
 ============================== */
 
-.create-heading {
+.genre-create-heading {
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
 }
 
-.create-heading__inner {
+.genre-create-heading__inner {
     width: min(1120px, calc(100% - 48px));
     margin: 0 auto;
     padding: 21px 0 24px;
@@ -22,8 +22,9 @@
    背景
 ============================== */
 
-.create-page {
+.genre-create-page {
     min-height: calc(100vh - 130px);
+
     padding: 44px 24px 70px;
 
     background: #f3f4f6;
@@ -31,14 +32,14 @@
 
 
 /* ==============================
-   フォームカード
+   白カード
 ============================== */
 
-.create-card {
+.genre-create-card {
     width: min(570px, 100%);
     margin: 0 auto;
 
-    padding: 27px 24px 22px;
+    padding: 24px 22px 20px;
 
     background: #ffffff;
 
@@ -52,17 +53,17 @@
 
 
 /* ==============================
-   入力欄
+   入力
 ============================== */
 
 .form-group {
-    margin-bottom: 21px;
+    margin-bottom: 18px;
 }
 
 .form-label {
     display: block;
 
-    margin: 0 0 6px;
+    margin-bottom: 3px;
 
     color: #4b5563;
 
@@ -76,18 +77,15 @@
     color: #ef4444;
 }
 
-
-/* input */
-
 .form-input {
     display: block;
 
     width: 100%;
-    height: 36px;
+    height: 34px;
 
     box-sizing: border-box;
 
-    padding: 6px 0;
+    padding: 4px 0;
 
     border: 0;
     border-bottom: 1px solid #edf0f3;
@@ -109,128 +107,7 @@
 
 .form-input:focus {
     border-bottom-color: #60a5fa;
-
     box-shadow: 0 1px 0 #60a5fa;
-}
-
-.form-input::placeholder {
-    color: #aab3c2;
-}
-
-
-/* date */
-
-.form-input[type="date"] {
-    color: #1f2937;
-}
-
-
-/* ==============================
-   補足
-============================== */
-
-.form-help {
-    margin: 4px 0 0;
-
-    color: #9ca3af;
-
-    font-size: 11px;
-
-    line-height: 1.5;
-}
-
-
-/* ==============================
-   説明
-============================== */
-
-.form-textarea {
-    display: block;
-
-    width: 100%;
-    min-height: 100px;
-
-    box-sizing: border-box;
-
-    padding: 8px 0;
-
-    resize: vertical;
-
-    border: 0;
-    border-bottom: 1px solid #edf0f3;
-    border-radius: 0;
-
-    outline: none;
-
-    background: #ffffff;
-
-    color: #1f2937;
-
-    font-family: inherit;
-    font-size: 14px;
-
-    line-height: 1.7;
-
-    transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.form-textarea:focus {
-    border-bottom-color: #60a5fa;
-
-    box-shadow: 0 1px 0 #60a5fa;
-}
-
-
-/* ==============================
-   ジャンル
-============================== */
-
-.genre-box {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    row-gap: 20px;
-    column-gap: 30px;
-
-    margin-top: 8px;
-
-    padding: 20px 22px 22px;
-
-    border-radius: 5px;
-
-    background: #f8fafc;
-}
-
-.genre-item {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    min-width: 0;
-
-    color: #4b5563;
-
-    font-size: 13px;
-
-    cursor: pointer;
-}
-
-.genre-item input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-
-    margin: 0;
-
-    flex: 0 0 auto;
-
-    accent-color: #65ad58;
-
-    cursor: pointer;
 }
 
 
@@ -248,7 +125,7 @@
 
 
 /* ==============================
-   下部ボタン
+   ボタン
 ============================== */
 
 .form-actions {
@@ -259,9 +136,9 @@
 
     gap: 18px;
 
-    margin-top: 25px;
+    margin-top: 17px;
 
-    padding-top: 21px;
+    padding-top: 15px;
 
     border-top: 1px solid #e5e7eb;
 }
@@ -286,10 +163,10 @@
     align-items: center;
     justify-content: center;
 
-    min-width: 76px;
-    height: 38px;
+    min-width: 58px;
+    height: 36px;
 
-    padding: 0 19px;
+    padding: 0 16px;
 
     border: 0;
     border-radius: 4px;
@@ -318,28 +195,15 @@
 
 @media (max-width: 700px) {
 
-    .create-heading__inner {
+    .genre-create-heading__inner {
         width: calc(100% - 32px);
     }
 
-    .create-page {
-        padding: 25px 16px 45px;
+    .genre-create-page {
+        padding: 28px 16px 50px;
     }
 
-    .create-card {
-        padding: 23px 20px;
+    .genre-create-card {
+        padding: 22px 20px 18px;
     }
-
-    .genre-box {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-@media (max-width: 450px) {
-
-    .genre-box {
-        grid-template-columns: 1fr;
-    }
-
 }

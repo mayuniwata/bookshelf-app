@@ -1,0 +1,295 @@
+/* ==============================
+   ジャンル詳細
+============================== */
+
+.genre-heading {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.genre-heading__inner {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 21px 0 24px;
+
+    color: #111827;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* ==============================
+   ページ背景
+============================== */
+
+.genre-show-page {
+    min-height: calc(100vh - 130px);
+
+    padding: 38px 24px 70px;
+
+    background: #f3f4f6;
+}
+
+.genre-show-container {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+}
+
+
+/* ==============================
+   戻るリンク
+============================== */
+
+.genre-back {
+    margin-bottom: 18px;
+}
+
+.genre-back a {
+    color: #3b82f6;
+
+    font-size: 12px;
+
+    text-decoration: none;
+}
+
+.genre-back a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+
+/* ==============================
+   白い一覧エリア
+============================== */
+
+.genre-books-panel {
+    padding: 20px;
+
+    border: 1px solid #edf0f3;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.02),
+        0 2px 8px rgba(0, 0, 0, 0.025);
+}
+
+
+/* ==============================
+   3列
+============================== */
+
+.genre-books-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ==============================
+   書籍カード
+============================== */
+
+.book-card {
+    display: block;
+
+    overflow: hidden;
+
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 1px 4px rgba(0, 0, 0, 0.03);
+
+    color: inherit;
+
+    text-decoration: none;
+
+    transition:
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==============================
+   書影
+============================== */
+
+.book-card__image-area {
+    padding: 13px 13px 0;
+}
+
+.book-card__image,
+.book-card__no-image {
+    display: block;
+
+    width: 100%;
+    height: 180px;
+
+    border-radius: 3px;
+}
+
+.book-card__image {
+    object-fit: cover;
+}
+
+.book-card__no-image {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #dfe7f0;
+
+    color: #40516a;
+
+    font-size: 150px;
+    font-weight: 500;
+
+    line-height: 1;
+}
+
+
+/* ==============================
+   書籍情報
+============================== */
+
+.book-card__body {
+    padding: 14px 14px 16px;
+}
+
+.book-card__title {
+    margin: 0 0 8px;
+
+    color: #1670d2;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.book-card__author {
+    margin: 0 0 9px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ==============================
+   ジャンルタグ
+============================== */
+
+.book-card__genres {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+}
+
+.genre-tag {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 20px;
+
+    padding: 2px 7px;
+
+    border-radius: 3px;
+
+    background: #f0f1f3;
+
+    color: #6b7280;
+
+    font-size: 10px;
+
+    line-height: 1.2;
+}
+
+.genre-tag.is-current {
+    background: #f0f1f3;
+    color: #6b7280;
+}
+
+
+/* ==============================
+   ページネーション
+============================== */
+
+.genre-pagination {
+    margin-top: 25px;
+}
+
+
+/* ==============================
+   空表示
+============================== */
+
+.genre-empty {
+    padding: 50px 20px;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+/* ==============================
+   Responsive
+============================== */
+
+@media (max-width: 900px) {
+
+    .genre-books-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .genre-heading__inner {
+        width: calc(100% - 32px);
+    }
+
+    .genre-show-page {
+        padding: 28px 16px 50px;
+    }
+
+    .genre-books-panel {
+        padding: 15px;
+    }
+}
+
+
+@media (max-width: 540px) {
+
+    .genre-books-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .book-card__no-image {
+        font-size: 120px;
+    }
+}

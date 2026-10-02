@@ -1,138 +1,338 @@
-* {
-    box-sizing: border-box;
+/* ==============================
+   書籍編集画面
+============================== */
+
+.edit-heading {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-body {
-    margin: 0;
-    background: #f7f8fa;
-    color: #333;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+.edit-heading__inner {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 21px 0 24px;
+
+    color: #111827;
+    font-size: 19px;
+    font-weight: 700;
 }
 
 
-.main {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
+/* ==============================
+   背景
+============================== */
+
+.edit-page {
+    min-height: calc(100vh - 130px);
+    padding: 44px 24px 70px;
+
+    background: #f3f4f6;
 }
 
-.page-title {
-    margin-bottom: 30px;
-    font-size: 28px;
-}
 
-.form-card {
-    padding: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
+/* ==============================
+   フォームカード
+============================== */
+
+.edit-card {
+    width: min(570px, 100%);
+    margin: 0 auto;
+
+    padding: 27px 24px 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #edf0f3;
     border-radius: 8px;
+
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.02),
+        0 2px 8px rgba(0, 0, 0, 0.025);
 }
+
+
+/* ==============================
+   フォーム
+============================== */
 
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 21px;
 }
 
 .form-label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+
+    margin: 0 0 6px;
+
+    color: #4b5563;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    line-height: 1.4;
 }
 
 .required {
-    margin-left: 5px;
-    color: #e74c3c;
-    font-size: 12px;
+    color: #ef4444;
 }
 
-.form-input,
-.form-textarea {
+
+/* ==============================
+   input
+============================== */
+
+.form-input {
+    display: block;
+
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    height: 36px;
+
+    box-sizing: border-box;
+
+    padding: 6px 0;
+
+    border: 0;
+    border-bottom: 1px solid #edf0f3;
+    border-radius: 0;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-family: inherit;
     font-size: 15px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-.form-input:focus,
-.form-textarea:focus {
-    outline: none;
-    border-color: #666;
+.form-input:focus {
+    border-bottom-color: #60a5fa;
+    box-shadow: 0 1px 0 #60a5fa;
 }
+
+.form-input::placeholder {
+    color: #aab3c2;
+}
+
+.form-input[type="date"] {
+    color: #1f2937;
+}
+
+
+/* ==============================
+   補足
+============================== */
+
+.form-help {
+    margin: 4px 0 0;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* ==============================
+   説明
+============================== */
 
 .form-textarea {
-    min-height: 130px;
+    display: block;
+
+    width: 100%;
+    min-height: 100px;
+
+    box-sizing: border-box;
+
+    padding: 8px 0;
+
     resize: vertical;
+
+    border: 0;
+    border-bottom: 1px solid #edf0f3;
+    border-radius: 0;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.7;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-.genre-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+.form-textarea:focus {
+    border-bottom-color: #60a5fa;
+    box-shadow: 0 1px 0 #60a5fa;
+}
+
+
+/* ==============================
+   ジャンル
+============================== */
+
+.genre-box {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    row-gap: 20px;
+    column-gap: 30px;
+
+    margin-top: 8px;
+
+    padding: 20px 22px 22px;
+
+    border-radius: 5px;
+
+    background: #f8fafc;
 }
 
 .genre-item {
     display: flex;
+
     align-items: center;
-    gap: 5px;
-}
 
-.form-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
+    gap: 8px;
 
-.submit-button {
-    padding: 12px 30px;
-    background: #333;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 15px;
+    min-width: 0;
+
+    color: #4b5563;
+
+    font-size: 13px;
+
     cursor: pointer;
 }
 
-.submit-button:hover {
-    opacity: 0.8;
+.genre-item input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+
+    margin: 0;
+
+    flex: 0 0 auto;
+
+    accent-color: #65ad58;
+
+    cursor: pointer;
 }
 
-.back-button {
-    display: inline-block;
-    padding: 12px 30px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #333;
+
+/* ==============================
+   エラー
+============================== */
+
+.form-error {
+    margin: 5px 0 0;
+
+    color: #dc2626;
+
+    font-size: 11px;
+}
+
+
+/* ==============================
+   下部
+============================== */
+
+.form-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 18px;
+
+    margin-top: 25px;
+
+    padding-top: 21px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.cancel-button {
+    color: #4b5563;
+
+    font-size: 13px;
+
     text-decoration: none;
+
+    transition: color 0.15s ease;
 }
 
-.back-button:hover {
-    background: #f5f5f5;
+.cancel-button:hover {
+    color: #111827;
 }
 
-@media (max-width: 550px) {
-    .main {
-        margin-top: 25px;
+.submit-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 60px;
+    height: 38px;
+
+    padding: 0 18px;
+
+    border: 0;
+    border-radius: 4px;
+
+    background: #3b82f6;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+}
+
+.submit-button:hover {
+    background: #2563eb;
+}
+
+
+/* ==============================
+   Responsive
+============================== */
+
+@media (max-width: 700px) {
+
+    .edit-heading__inner {
+        width: calc(100% - 32px);
     }
 
-    .form-card {
-        padding: 20px;
+    .edit-page {
+        padding: 25px 16px 45px;
     }
 
-    .form-actions {
-        flex-direction: column;
+    .edit-card {
+        padding: 23px 20px;
     }
 
-    .submit-button,
-    .back-button {
-        width: 100%;
-        text-align: center;
+    .genre-box {
+        grid-template-columns: repeat(2, 1fr);
     }
+}
 
-        .error-message {
-            margin: 6px 0 0;
-            color: #e74c3c;
-            font-size: 13px;
-        }
+@media (max-width: 450px) {
+
+    .genre-box {
+        grid-template-columns: 1fr;
+    }
 }

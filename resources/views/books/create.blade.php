@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '書籍登録')
+@section('title', '書籍の登録')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/books-create.css') }}">
@@ -8,22 +8,27 @@
 
 @section('content')
 
-<main class="main">
+<div class="create-heading">
+    <div class="create-heading__inner">
+        書籍の登録
+    </div>
+</div>
 
-    <h2 class="page-title">書籍登録</h2>
+<main class="create-page">
 
-    <div class="form-card">
+    <div class="create-card">
 
         <form action="{{ route('books.store') }}" method="POST">
             @csrf
 
+            {{-- タイトル --}}
             <div class="form-group">
-                <label class="form-label">
-                    タイトル
-                    <span class="required">必須</span>
+                <label for="title" class="form-label">
+                    タイトル <span class="required">*</span>
                 </label>
 
                 <input
+                    id="title"
                     type="text"
                     name="title"
                     class="form-input"
@@ -31,17 +36,19 @@
                 >
 
                 @error('title')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
+
+            {{-- 著者 --}}
             <div class="form-group">
-                <label class="form-label">
-                    著者
-                    <span class="required">必須</span>
+                <label for="author" class="form-label">
+                    著者 <span class="required">*</span>
                 </label>
 
                 <input
+                    id="author"
                     type="text"
                     name="author"
                     class="form-input"
@@ -49,35 +56,44 @@
                 >
 
                 @error('author')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
+
+            {{-- ISBN --}}
             <div class="form-group">
-                <label class="form-label">
-                    ISBN
-                    <span class="required">必須</span>
+                <label for="isbn" class="form-label">
+                    ISBN-13 <span class="required">*</span>
                 </label>
 
                 <input
+                    id="isbn"
                     type="text"
                     name="isbn"
                     class="form-input"
                     value="{{ old('isbn') }}"
+                    maxlength="13"
                 >
 
+                <p class="form-help">
+                    13桁のISBNコードを入力してください
+                </p>
+
                 @error('isbn')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
+
+            {{-- 出版日 --}}
             <div class="form-group">
-                <label class="form-label">
-                    出版日
-                    <span class="required">必須</span>
+                <label for="published_date" class="form-label">
+                    出版日 <span class="required">*</span>
                 </label>
 
                 <input
+                    id="published_date"
                     type="date"
                     name="published_date"
                     class="form-input"
@@ -85,38 +101,67 @@
                 >
 
                 @error('published_date')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
+
+            {{-- 説明 --}}
             <div class="form-group">
-                <label class="form-label">
+                <label for="description" class="form-label">
+                    説明
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    class="form-textarea"
+                    rows="5"
+                >{{ old('description') }}</textarea>
+
+                @error('description')
+                    <p class="form-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+
+            {{-- 画像URL --}}
+            <div class="form-group">
+                <label for="image_url" class="form-label">
                     画像URL
                 </label>
 
                 <input
+                    id="image_url"
                     type="url"
                     name="image_url"
                     class="form-input"
                     value="{{ old('image_url') }}"
-                    placeholder="https://..."
+                    placeholder="https://example.com/image.jpg"
                 >
 
+                <p class="form-help">
+                    書籍の表紙画像のURLを入力してください（任意）
+                </p>
+
                 @error('image_url')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label class="form-label">
-                    ジャンル
-                </label>
 
-                <div class="genre-list">
+            {{-- ジャンル --}}
+            <div class="form-group">
+                <p class="form-label">
+                    ジャンル <span class="required">*</span>
+                </p>
+
+                <div class="genre-box">
 
                     @foreach ($genres as $genre)
 
                         <label class="genre-item">
+
                             <input
                                 type="checkbox"
                                 name="genres[]"
@@ -124,7 +169,8 @@
                                 {{ in_array($genre->id, old('genres', [])) ? 'checked' : '' }}
                             >
 
-                            {{ $genre->name }}
+                            <span>{{ $genre->name }}</span>
+
                         </label>
 
                     @endforeach
@@ -132,34 +178,31 @@
                 </div>
 
                 @error('genres')
-                    <p class="error-message">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
+                @enderror
+
+                @error('genres.*')
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label class="form-label">
-                    説明
-                </label>
 
-                <textarea
-                    name="description"
-                    class="form-textarea"
-                >{{ old('description') }}</textarea>
-
-                @error('description')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
-            </div>
-
+            {{-- ボタン --}}
             <div class="form-actions">
 
-                <button type="submit" class="submit-button">
-                    登録する
-                </button>
-
-                <a href="{{ route('books.index') }}" class="back-button">
-                    戻る
+                <a
+                    href="{{ route('books.index') }}"
+                    class="cancel-button"
+                >
+                    キャンセル
                 </a>
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    登録
+                </button>
 
             </div>
 

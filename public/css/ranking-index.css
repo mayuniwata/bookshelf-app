@@ -1,0 +1,296 @@
+/* ==============================
+   評価ランキング
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+.ranking-heading {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ranking-heading__inner {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 21px 0 24px;
+
+    color: #111827;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* ==============================
+   背景
+================================ */
+
+.ranking-page {
+    min-height: calc(100vh - 130px);
+    padding: 44px 24px 70px;
+    background: #f3f4f6;
+}
+
+.ranking-container {
+    width: min(900px, 100%);
+    margin: 0 auto;
+}
+
+
+/* ==============================
+   ランキング一覧
+================================ */
+
+.ranking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    width: 100%;
+    padding: 16px 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    color: inherit;
+    text-decoration: none;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.ranking-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==============================
+   順位
+================================ */
+
+.ranking-position {
+    display: flex;
+    flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 50%;
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.ranking-position--first {
+    background: #fbbf24;
+    color: #ffffff;
+}
+
+.ranking-position--second {
+    background: #9ca3af;
+    color: #ffffff;
+}
+
+.ranking-position--third {
+    background: #b7791f;
+    color: #ffffff;
+}
+
+
+/* ==============================
+   書籍画像
+================================ */
+
+.ranking-image {
+    flex: 0 0 70px;
+
+    width: 70px;
+    height: 90px;
+}
+
+.ranking-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 4px;
+
+    object-fit: cover;
+}
+
+.ranking-no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 4px;
+
+    background: #e8edf5;
+
+    color: #475569;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+
+/* ==============================
+   書籍情報
+================================ */
+
+.ranking-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ranking-title {
+    margin: 0 0 6px;
+
+    color: #2563eb;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.ranking-author {
+    margin: 0 0 8px;
+
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.ranking-stars {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+
+    font-size: 13px;
+}
+
+.star {
+    color: #d1d5db;
+}
+
+.star--active {
+    color: #fbbf24;
+}
+
+.ranking-rating {
+    margin-left: 6px;
+
+    color: #374151;
+    font-weight: 600;
+}
+
+.ranking-reviews {
+    margin-left: 5px;
+    color: #9ca3af;
+}
+
+
+/* ==============================
+   平均評価
+================================ */
+
+.ranking-score {
+    flex: 0 0 85px;
+    text-align: center;
+}
+
+.ranking-score__number {
+    color: #f59e0b;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.ranking-score__label {
+    margin-top: 2px;
+
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+
+/* ==============================
+   空表示
+================================ */
+
+.ranking-empty {
+    padding: 55px 20px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #6b7280;
+    text-align: center;
+}
+
+
+/* ==============================
+   スマホ
+================================ */
+
+@media (max-width: 650px) {
+
+    .ranking-heading__inner {
+        width: calc(100% - 32px);
+    }
+
+    .ranking-page {
+        padding: 28px 16px 50px;
+    }
+
+    .ranking-item {
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .ranking-position {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .ranking-image {
+        flex-basis: 55px;
+        width: 55px;
+        height: 72px;
+    }
+
+    .ranking-score {
+        display: none;
+    }
+
+    .ranking-title {
+        font-size: 15px;
+    }
+
+    .ranking-reviews {
+        width: 100%;
+        margin-left: 0;
+    }
+}

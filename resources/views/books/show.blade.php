@@ -8,396 +8,351 @@
 
 @section('content')
 
-<main class="main">
+<div class="detail-heading">
+    <div class="detail-heading__inner">
+        {{ $book->title }}
+    </div>
+</div>
 
-    {{-- 書籍詳細 --}}
-    <div class="book-detail">
+<main class="book-show">
 
-        <div class="book-detail__image-area">
+    <section class="book-panel">
 
-            @if ($book->image_url)
+        <div class="book-detail">
 
-                <img
-                    src="{{ $book->image_url }}"
-                    alt="{{ $book->title }}"
-                    class="book-detail__image"
-                >
-
-            @else
-
-                <div class="book-detail__no-image">
-                    No Image
-                </div>
-
-            @endif
-
-        </div>
-
-        <div class="book-detail__content">
-
-            <h2 class="book-detail__title">
-                {{ $book->title }}
-            </h2>
-
-            <p class="book-detail__author">
-                {{ $book->author }}
-            </p>
-
-            {{-- 評価 --}}
-            <div class="book-detail__rating">
-
-                @if ($book->reviews_count > 0)
-
-                    <span class="book-detail__stars">
-                        ★
-                    </span>
-
-                    <strong>
-                        {{ number_format($book->reviews_avg_rating, 1) }}
-                    </strong>
-
-                    <span class="book-detail__review-count">
-                        （{{ $book->reviews_count }}件のレビュー）
-                    </span>
-
-                @else
-
-                    <span class="book-detail__review-count">
-                        まだ評価はありません
-                    </span>
-
-                @endif
-
-            </div>
-
-            {{-- ジャンル --}}
-            <div class="book-detail__genres">
-
-                @foreach ($book->genres as $genre)
-
-                    <span class="genre-tag">
-                        {{ $genre->name }}
-                    </span>
-
-                @endforeach
-
-            </div>
-
-            {{-- 基本情報 --}}
-            <dl class="book-info">
-
-                <div class="book-info__row">
-                    <dt>ISBN</dt>
-                    <dd>{{ $book->isbn }}</dd>
-                </div>
-
-                <div class="book-info__row">
-                    <dt>出版日</dt>
-                    <dd>{{ $book->published_date }}</dd>
-                </div>
-
-            </dl>
-
-            {{-- 書籍紹介 --}}
-            <div class="book-description">
-
-                <h3>書籍紹介</h3>
-
-                <p>
-                    {{ $book->description ?? '説明はありません。' }}
-                </p>
-
-            </div>
-
-
-            {{-- お気に入り --}}
-            @auth
-
-                <div class="book-favorite">
-
-                    <form
-                        action="{{ route('favorites.toggle', $book) }}"
-                        method="POST"
+            {{-- 左：書影 --}}
+            <div class="book-detail__image-area">
+                @if ($book->image_url)
+                    <img
+                        src="{{ $book->image_url }}"
+                        alt="{{ $book->title }}"
+                        class="book-detail__image"
                     >
-                        @csrf
+                @else
+                    <div class="book-detail__no-image">
+                        {{ $book->id }}
+                    </div>
+                @endif
+            </div>
 
-                        <button
-                            type="submit"
-                            class="favorite-button"
-                        >
-                            @if ($book->favoritedByUsers->contains(auth()->id()))
-                                ♥ お気に入り解除
-                            @else
-                                ♡ お気に入りに追加
-                            @endif
-                        </button>
+            {{-- 右：書籍情報 --}}
+            <div class="book-detail__content">
 
-                    </form>
+                <div class="book-detail__top">
+                    <h1 class="book-detail__title">
+                        {{ $book->title }}
+                    </h1>
 
-                </div>
-
-            @endauth
-
-
-            {{-- 書籍操作 --}}
-            <div class="book-actions">
-
-                <a
-                    href="{{ route('books.index') }}"
-                    class="back-button"
-                >
-                    一覧に戻る
-                </a>
-
-                @auth
-
-                    @if ($book->user_id === auth()->id())
-
-                        <a
-                            href="{{ route('books.edit', $book) }}"
-                            class="edit-button"
-                        >
-                            編集する
-                        </a>
-
+                    @auth
                         <form
-                            action="{{ route('books.destroy', $book) }}"
+                            action="{{ route('favorites.toggle', $book) }}"
                             method="POST"
-                            onsubmit="return confirm('この書籍を削除してもよろしいですか？');"
+                            class="favorite-form"
                         >
                             @csrf
-                            @method('DELETE')
 
                             <button
                                 type="submit"
-                                class="delete-button"
+                                class="favorite-button {{ $book->favoritedByUsers->contains(auth()->id()) ? 'is-active' : '' }}"
+                                title="お気に入り"
                             >
-                                削除する
+                                {{ $book->favoritedByUsers->contains(auth()->id()) ? '♥' : '♡' }}
                             </button>
-
                         </form>
-
-                    @endif
-
-                @endauth
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    {{-- レビュー投稿 --}}
-    @auth
-
-        <section class="review-section">
-
-            <h2 class="review-section__title">
-                レビューを投稿
-            </h2>
-
-            <form
-                action="{{ route('reviews.store', $book) }}"
-                method="POST"
-                class="review-form"
-            >
-                @csrf
-
-                <div class="review-form__group">
-
-                    <label for="rating">
-                        評価
-                    </label>
-
-                    <select
-                        name="rating"
-                        id="rating"
-                        class="review-form__select"
-                    >
-                        <option value="">
-                            選択してください
-                        </option>
-
-                        <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>
-                            ★★★★★ 5
-                        </option>
-
-                        <option value="4" {{ old('rating') == 4 ? 'selected' : '' }}>
-                            ★★★★☆ 4
-                        </option>
-
-                        <option value="3" {{ old('rating') == 3 ? 'selected' : '' }}>
-                            ★★★☆☆ 3
-                        </option>
-
-                        <option value="2" {{ old('rating') == 2 ? 'selected' : '' }}>
-                            ★★☆☆☆ 2
-                        </option>
-
-                        <option value="1" {{ old('rating') == 1 ? 'selected' : '' }}>
-                            ★☆☆☆☆ 1
-                        </option>
-
-                    </select>
-
-                    @error('rating')
-                        <p class="error-message">
-                            {{ $message }}
-                        </p>
-                    @enderror
-
+                    @endauth
                 </div>
 
-                <div class="review-form__group">
+                <div class="book-meta">
 
-                    <label for="comment">
-                        コメント
-                    </label>
-
-                    <textarea
-                        name="comment"
-                        id="comment"
-                        class="review-form__textarea"
-                        placeholder="この本の感想を書いてください"
-                    >{{ old('comment') }}</textarea>
-
-                    @error('comment')
-                        <p class="error-message">
-                            {{ $message }}
-                        </p>
-                    @enderror
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="review-form__button"
-                >
-                    レビューを投稿
-                </button>
-
-            </form>
-
-        </section>
-
-    @endauth
-
-
-    {{-- レビュー一覧 --}}
-    <section class="review-list-section">
-
-        <h2 class="review-section__title">
-            みんなのレビュー
-        </h2>
-
-        @forelse ($book->reviews as $review)
-
-            <div class="review-card">
-
-                <div class="review-card__header">
-
-                    <span class="review-card__user">
-                        {{ $review->user->name }}
-                    </span>
-
-                    <span class="review-card__rating">
-
-                        @for ($i = 1; $i <= 5; $i++)
-                            {{ $i <= $review->rating ? '★' : '☆' }}
-                        @endfor
-
-                    </span>
-
-                </div>
-
-                <p class="review-card__comment">
-                    {{ $review->comment }}
-                </p>
-
-                <p class="review-card__date">
-                    {{ $review->created_at->format('Y/m/d') }}
-                </p>
-
-
-                {{-- レビューいいね --}}
-                @auth
-
-                    <form
-                        action="{{ route('reviews.like', $review) }}"
-                        method="POST"
-                    >
-                        @csrf
-
-                        <button
-                            type="submit"
-                            class="review-card__like"
-                        >
-                            @if ($review->likedByUsers->contains(auth()->id()))
-                                ♥ いいね解除
-                            @else
-                                ♡ いいね
-                            @endif
-
-                            （{{ $review->likedByUsers->count() }}）
-
-                        </button>
-
-                    </form>
-
-                @else
-
-                    <p class="review-card__like-count">
-                        ♡ いいね（{{ $review->likedByUsers->count() }}）
+                    <p>
+                        <strong>著者:</strong>
+                        {{ $book->author }}
                     </p>
 
-                @endauth
+                    <p>
+                        <strong>ISBN:</strong>
+                        {{ $book->isbn }}
+                    </p>
 
+                    <p>
+                        <strong>出版日:</strong>
+                        {{ $book->published_date }}
+                    </p>
 
-                {{-- 自分のレビューだけ編集・削除 --}}
+                    <div class="book-meta__genres">
+                        <strong>ジャンル:</strong>
+
+                        <div class="genre-list">
+                            @forelse ($book->genres as $genre)
+                                <span class="genre-tag">
+                                    {{ $genre->name }}
+                                </span>
+                            @empty
+                                <span class="genre-empty">未設定</span>
+                            @endforelse
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="book-description">
+                    <strong>説明:</strong>
+
+                    <p>
+                        {{ $book->description ?? '説明はありません。' }}
+                    </p>
+                </div>
+
                 @auth
+                    @if ($book->user_id === auth()->id())
+                        <div class="book-actions">
 
-                    @if ($review->user_id === auth()->id())
-
-                        <a
-                            href="{{ route('reviews.edit', $review) }}"
-                            class="review-card__edit"
-                        >
-                            編集
-                        </a>
-
-                        <form
-                            action="{{ route('reviews.destroy', $review) }}"
-                            method="POST"
-                            onsubmit="return confirm('このレビューを削除してもよろしいですか？');"
-                        >
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                type="submit"
-                                class="review-card__delete"
+                            <a
+                                href="{{ route('books.edit', $book) }}"
+                                class="book-action book-action--edit"
                             >
-                                削除
-                            </button>
+                                編集
+                            </a>
 
-                        </form>
+                            <form
+                                action="{{ route('books.destroy', $book) }}"
+                                method="POST"
+                                onsubmit="return confirm('この書籍を削除してもよろしいですか？');"
+                            >
+                                @csrf
+                                @method('DELETE')
 
+                                <button
+                                    type="submit"
+                                    class="book-action book-action--delete"
+                                >
+                                    削除
+                                </button>
+                            </form>
+
+                        </div>
                     @endif
-
                 @endauth
 
             </div>
 
-        @empty
+        </div>
 
-            <p class="review-empty">
-                まだレビューはありません。
-            </p>
+        {{-- レビュー --}}
+        <div class="reviews">
 
-        @endforelse
+            <h2 class="reviews__title">
+                レビュー
+            </h2>
+
+            {{-- レビュー投稿 --}}
+            @auth
+                <div class="review-post">
+
+                    <h3 class="review-post__title">
+                        レビューを投稿
+                    </h3>
+
+                    <form
+                        action="{{ route('reviews.store', $book) }}"
+                        method="POST"
+                    >
+                        @csrf
+
+                        <div class="review-form__group">
+                            <label for="rating">
+                                評価
+                            </label>
+
+                            <select
+                                name="rating"
+                                id="rating"
+                                class="review-form__select"
+                            >
+                                <option value="">選択してください</option>
+
+                                <option value="5" {{ old('rating') == 5 ? 'selected' : '' }}>
+                                    ★★★★★
+                                </option>
+
+                                <option value="4" {{ old('rating') == 4 ? 'selected' : '' }}>
+                                    ★★★★☆
+                                </option>
+
+                                <option value="3" {{ old('rating') == 3 ? 'selected' : '' }}>
+                                    ★★★☆☆
+                                </option>
+
+                                <option value="2" {{ old('rating') == 2 ? 'selected' : '' }}>
+                                    ★★☆☆☆
+                                </option>
+
+                                <option value="1" {{ old('rating') == 1 ? 'selected' : '' }}>
+                                    ★☆☆☆☆
+                                </option>
+                            </select>
+
+                            @error('rating')
+                                <p class="form-error">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <div class="review-form__group">
+                            <label for="comment">
+                                コメント
+                            </label>
+
+                            <textarea
+                                name="comment"
+                                id="comment"
+                                class="review-form__textarea"
+                                placeholder="この書籍の感想を書いてください"
+                            >{{ old('comment') }}</textarea>
+
+                            @error('comment')
+                                <p class="form-error">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <div class="review-form__submit">
+                            <button
+                                type="submit"
+                                class="review-submit"
+                            >
+                                投稿する
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            @endauth
+
+            {{-- レビュー一覧 --}}
+            <div class="review-list">
+
+                @forelse ($book->reviews as $review)
+
+                    <article class="review-card">
+
+                        <div class="review-card__top">
+
+                            <div class="review-card__person">
+
+                                <div class="review-card__name">
+                                    {{ $review->user->name }}
+                                </div>
+
+                                <div class="review-card__stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span class="{{ $i <= $review->rating ? 'star-filled' : 'star-empty' }}">
+                                            ★
+                                        </span>
+                                    @endfor
+                                </div>
+
+                            </div>
+
+                            <time class="review-card__date">
+                                {{ $review->created_at->format('Y/m/d') }}
+                            </time>
+
+                        </div>
+
+                        <p class="review-card__comment">
+                            {{ $review->comment }}
+                        </p>
+
+                        <div class="review-card__bottom">
+
+                            <div class="review-card__like-area">
+
+                                @auth
+                                    <form
+                                        action="{{ route('reviews.like', $review) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="review-like {{ $review->likedByUsers->contains(auth()->id()) ? 'is-liked' : '' }}"
+                                        >
+                                            ♡
+                                            {{ $review->likedByUsers->contains(auth()->id()) ? 'いいね済み' : 'いいね' }}
+                                            ({{ $review->likedByUsers->count() }})
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="review-like review-like--guest">
+                                        ♡ いいね ({{ $review->likedByUsers->count() }})
+                                    </span>
+                                @endauth
+
+                            </div>
+
+                            @auth
+                                @if ($review->user_id === auth()->id())
+
+                                    <div class="review-card__actions">
+
+                                        <a
+                                            href="{{ route('reviews.edit', $review) }}"
+                                            class="review-edit"
+                                        >
+                                            編集
+                                        </a>
+
+                                        <form
+                                            action="{{ route('reviews.destroy', $review) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('このレビューを削除してもよろしいですか？');"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button
+                                                type="submit"
+                                                class="review-delete"
+                                            >
+                                                削除
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                @endif
+                            @endauth
+
+                        </div>
+
+                    </article>
+
+                @empty
+
+                    <div class="review-empty">
+                        まだレビューはありません。
+                    </div>
+
+                @endforelse
+
+            </div>
+
+        </div>
 
     </section>
+
+    <a
+        href="{{ route('books.index') }}"
+        class="back-link"
+    >
+        ← 一覧に戻る
+    </a>
 
 </main>
 
